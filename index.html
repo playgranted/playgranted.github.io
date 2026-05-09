@@ -398,6 +398,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 768);
+
 /* ── INTRO — phase 1: hyperspace shader, phase 2: camera approach ── */
 const HYPER_DURATION = 1.8;
 const APPROACH_DURATION = 3.0;
@@ -860,7 +862,6 @@ $('cfg-save').addEventListener('click', () => {
 /* ── THREE.JS — ETHEREAL DJINN ── */
 const appEl = document.getElementById('app');
 const gfxBtn = $('gfx-toggle');
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 768);
 let gfxMode = localStorage.getItem('gw_gfx') || 'high';
 let gfxRunning = false;
 
