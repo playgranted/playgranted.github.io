@@ -398,6 +398,8 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 768);
+
 /* ── INTRO — phase 1: hyperspace shader, phase 2: camera approach ── */
 const HYPER_DURATION = 1.8;
 const APPROACH_DURATION = 3.0;
@@ -1393,6 +1395,13 @@ function setGfx(mode) {
 
 gfxBtn.addEventListener('click', () => setGfx(gfxMode === 'high' ? 'low' : 'high'));
 
+/* ── MOBILE AUTO-PAN — smooth glide to djinn after intro ── */
+let mobilePanActive = false;
+let mobilePanTime = 0;
+const MOBILE_PAN_DURATION = 2.5;
+const mobilePanFrom = new THREE.Vector3();
+const mobilePanTo = new THREE.Vector3(0, 0.5, 6);
+
 /* ── ANIMATION ── */
 let prevT = 0;
 
@@ -1421,7 +1430,18 @@ function animate() {
       camera.updateProjectionMatrix();
       document.querySelector('.ui-layer').classList.add('visible');
       document.querySelector('.game-area').classList.add('visible');
+      if (isMobile) { mobilePanActive = true; mobilePanTime = 0; mobilePanFrom.copy(INTRO_TO); }
     }
+  }
+
+  /* Mobile auto-pan to djinn */
+  if (mobilePanActive) {
+    mobilePanTime += dt;
+    const p = Math.min(mobilePanTime / MOBILE_PAN_DURATION, 1);
+    const e = easeOutCubic(p);
+    camera.position.lerpVectors(mobilePanFrom, mobilePanTo, e);
+    camera.lookAt(controls.target);
+    if (p >= 1) { mobilePanActive = false; }
   }
 
   /* Lerp genie state */
