@@ -1436,12 +1436,17 @@ function animate() {
 
   /* Mobile auto-pan to djinn */
   if (mobilePanActive) {
+    controls.enabled = false;
     mobilePanTime += dt;
     const p = Math.min(mobilePanTime / MOBILE_PAN_DURATION, 1);
     const e = easeOutCubic(p);
     camera.position.lerpVectors(mobilePanFrom, mobilePanTo, e);
     camera.lookAt(controls.target);
-    if (p >= 1) { mobilePanActive = false; }
+    if (p >= 1) {
+      mobilePanActive = false;
+      controls.enabled = true;
+      controls.update();
+    }
   }
 
   /* Lerp genie state */
