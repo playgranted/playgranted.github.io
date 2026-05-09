@@ -43,8 +43,8 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;background:rad
 .frame-corners::before,.frame-corners::after{content:'';position:absolute;width:18px;height:18px;border-color:rgba(170,136,255,.5);border-style:solid;filter:drop-shadow(0 0 8px rgba(170,136,255,.3))}
 .frame-corners::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
 .frame-corners::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
-.game-area{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:5vh;pointer-events:none;opacity:0;transition:opacity .6s ease .2s}
-.state{position:absolute;bottom:5vh;width:min(88vw,500px);display:flex;flex-direction:column;align-items:center;opacity:0;pointer-events:none;transition:opacity .6s ease}
+.game-area{position:absolute;inset:0;z-index:15;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity .6s ease .2s}
+.state{grid-area:1/1;width:min(88vw,500px);display:flex;flex-direction:column;align-items:center;opacity:0;pointer-events:none;transition:opacity .6s ease}
 .state.active{opacity:1;pointer-events:auto}
 .wish-cta{text-align:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
 .cta-main{display:block;font-size:clamp(1.6rem,5vw,2.6rem);font-weight:700;letter-spacing:.3em;color:#00f0ff;text-shadow:0 0 30px rgba(0,240,255,.5),0 0 60px rgba(0,240,255,.18);animation:breathe 3s ease-in-out infinite}
@@ -124,7 +124,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;background:rad
   .hint{font-size:.62rem;justify-content:center}
   .footer-btns{flex-wrap:wrap;justify-content:center;gap:6px}
   .footer-btn{padding:10px 16px;font-size:.72rem}
-  .state{width:min(94vw,500px);bottom:3vh}
+  .state{width:min(94vw,500px)}
   .cta-main{letter-spacing:.15em}
   .cta-sub{font-size:.72rem}
   .input-box{padding:16px}
@@ -398,13 +398,11 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 
-const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 768);
-
 /* ── INTRO — phase 1: hyperspace shader, phase 2: camera approach ── */
 const HYPER_DURATION = 1.8;
 const APPROACH_DURATION = 3.0;
 const INTRO_FROM = new THREE.Vector3(2, 4, 55);
-const INTRO_TO = isMobile ? new THREE.Vector3(0, 0.6, 5.5) : new THREE.Vector3(0, 0.8, 7);
+const INTRO_TO = new THREE.Vector3(0, 1.4, 9);
 let introPhase = 'hyper';
 let approachTime = 0;
 let introDone = false;
@@ -881,7 +879,7 @@ const U = { uTime: { value: 0 }, uFlicker: { value: 1 } };
 const clock = new THREE.Clock();
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setClearColor(0x000000, 0);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -902,8 +900,8 @@ controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.rotateSpeed = 0.5;
 controls.enablePan = false;
-controls.minDistance = isMobile ? 4 : 5;
-controls.maxDistance = isMobile ? 10 : 16;
+controls.minDistance = 5;
+controls.maxDistance = 16;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.3;
 controls.enabled = false;
