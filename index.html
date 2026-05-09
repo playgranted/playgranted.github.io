@@ -10,16 +10,19 @@
 <link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-touch-icon.png">
 <link rel="manifest" href="favicons/site.webmanifest">
 <meta name="theme-color" content="#000007">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
 <style>
 @import url('https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-sans/style.css');
 @import url('https://cdn.jsdelivr.net/npm/geist@1.4.1/dist/fonts/geist-mono/style.css');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;overflow:hidden;background:#030305;background:radial-gradient(circle at 50% 46%,rgba(130,100,255,.11) 0%,rgba(130,100,255,.03) 11%,transparent 28%),radial-gradient(circle at 35% 28%,rgba(0,240,255,.16) 0%,rgba(0,89,255,.05) 26%,transparent 48%),radial-gradient(circle at 70% 66%,rgba(170,68,255,.13) 0%,rgba(170,68,255,.035) 24%,transparent 48%),radial-gradient(circle at center,#0a0e20 0%,#050508 52%,#010103 100%);font-family:'Geist Sans',sans-serif;color:#fff}
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;background:#030305;background:radial-gradient(circle at 50% 46%,rgba(130,100,255,.11) 0%,rgba(130,100,255,.03) 11%,transparent 28%),radial-gradient(circle at 35% 28%,rgba(0,240,255,.16) 0%,rgba(0,89,255,.05) 26%,transparent 48%),radial-gradient(circle at 70% 66%,rgba(170,68,255,.13) 0%,rgba(170,68,255,.035) 24%,transparent 48%),radial-gradient(circle at center,#0a0e20 0%,#050508 52%,#010103 100%);font-family:'Geist Sans',sans-serif;color:#fff}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0%,rgba(0,240,255,.035) 28%,transparent 46%,rgba(170,68,255,.03) 63%,transparent 100%),repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0px,rgba(255,255,255,.015) 1px,transparent 1px,transparent 4px);mix-blend-mode:screen;opacity:.65;z-index:2}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at center,transparent 0%,transparent 48%,rgba(0,0,0,.55) 100%);z-index:3}
 #intro{position:fixed;inset:0;z-index:100;background:#000}
 #intro canvas{display:block;width:100%;height:100%}
-#app{position:absolute;top:0;left:0;width:100vw;height:100vh;z-index:1}
+#app{position:absolute;top:0;left:0;width:100vw;height:100vh;height:100dvh;z-index:1}
 #scene-fade{position:fixed;inset:0;z-index:2;background:#000;pointer-events:none;transition:opacity .5s ease}
 #scene-fade.out{opacity:0}
 .game-area.visible{opacity:1}
@@ -111,6 +114,52 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;background:rad
 .support-link{display:inline-block;margin-top:6px;color:#aa88ff;cursor:pointer;pointer-events:auto;letter-spacing:.15em;transition:all .3s;font-size:.78rem;font-weight:600}
 .support-link:hover{color:#00f0ff;text-shadow:0 0 10px rgba(0,240,255,.4)}
 .donate-note{font-family:'Geist Mono',monospace;font-size:.68rem;color:rgba(255,255,255,.55);line-height:1.6;margin-bottom:12px;padding:0 8px}
+
+/* ── MOBILE ── */
+@media(max-width:640px){
+  .ui-layer{padding:12px 14px}
+  .header{flex-direction:column;gap:8px}
+  .status{text-align:left;font-size:.62rem;padding:6px 10px;border-radius:8px}
+  .footer{flex-direction:column;gap:10px;align-items:stretch}
+  .hint{font-size:.62rem;justify-content:center}
+  .footer-btns{flex-wrap:wrap;justify-content:center;gap:6px}
+  .footer-btn{padding:10px 16px;font-size:.72rem}
+  .state{width:min(94vw,500px)}
+  .cta-main{letter-spacing:.15em}
+  .cta-sub{font-size:.72rem}
+  .input-box{padding:16px}
+  #wish-text{min-height:64px;font-size:14px;padding:12px}
+  .btn{padding:12px 22px;font-size:14px;min-height:44px}
+  .result-box{padding:16px 14px;max-height:60vh}
+  .narration{font-size:13px;line-height:1.7;max-height:30vh}
+  .verdict-badge{font-size:clamp(1.1rem,5vw,1.5rem);padding:6px 18px;letter-spacing:.2em}
+  .loophole{font-size:.68rem}
+  .rating-label{font-size:.62rem}
+  .rating-num{font-size:.68rem}
+  .donate-modal{padding:24px 18px;width:min(95vw,420px);max-height:85vh;overflow-y:auto}
+  .donate-title{font-size:1.1rem;letter-spacing:.15em}
+  .donate-sub{font-size:.72rem}
+  .donate-amounts{gap:6px}
+  .donate-amt{padding:10px 14px;font-size:.8rem}
+  .donate-addr{font-size:.6rem}
+  .help-body p,.help-body ol{font-size:.7rem}
+  .help-heading{font-size:.8rem}
+  .frame-corners{top:8px;left:8px;right:8px;bottom:8px}
+  .title-box p{font-size:.62rem}
+}
+@media(max-width:380px){
+  .nav-brand__name{font-size:1rem;letter-spacing:.1em}
+  .nav-brand__logo{height:18px}
+  .cta-main{font-size:1.4rem}
+  .footer-btn{padding:8px 12px;font-size:.65rem}
+  .status{font-size:.58rem}
+}
+/* touch targets */
+@media(hover:none){
+  .btn,.footer-btn,.donate-amt,.donate-copy{min-height:44px;min-width:44px}
+  #wish-text{font-size:16px}
+}
+
 .settings-body{text-align:left;margin-top:16px}
 .settings-row{margin-bottom:12px}
 .settings-label{display:block;font-family:'Geist Mono',monospace;font-size:.72rem;color:rgba(0,240,255,.5);letter-spacing:.12em;margin-bottom:6px;text-transform:uppercase}
@@ -811,7 +860,8 @@ $('cfg-save').addEventListener('click', () => {
 /* ── THREE.JS — ETHEREAL DJINN ── */
 const appEl = document.getElementById('app');
 const gfxBtn = $('gfx-toggle');
-let gfxMode = localStorage.getItem('gw_gfx') || 'high';
+const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && innerWidth < 768);
+let gfxMode = localStorage.getItem('gw_gfx') || (isMobile ? 'low' : 'high');
 let gfxRunning = false;
 
 const C = {
@@ -830,7 +880,7 @@ const U = { uTime: { value: 0 }, uFlicker: { value: 1 } };
 const clock = new THREE.Clock();
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
 renderer.setClearColor(0x000000, 0);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
