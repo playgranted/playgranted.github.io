@@ -264,8 +264,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;background:rad
 
   <div class="state" id="s-error">
     <div class="error-box">
-      <p class="error-text" id="error-msg">The Djinn's power falters... try again.</p>
+      <p class="error-text" id="error-msg"></p>
       <button class="btn" id="btn-retry">TRY AGAIN</button>
+      <button class="btn" id="btn-error-help" style="margin-top:10px;border-color:rgba(170,136,255,.35);color:#aa88ff;display:none">GET YOUR OWN FREE KEY</button>
     </div>
   </div>
 </div>
@@ -692,7 +693,21 @@ async function submitWish() {
     updateStats();
   } catch (e) {
     console.error('WISH ERROR:', e);
-    $('error-msg').textContent = '[' + e.message.slice(0, 150) + ']';
+    const msg = e.message || '';
+    const helpBtn = $('btn-error-help');
+    if (msg.includes('429') || msg.includes('quota') || msg.includes('rate') || msg.includes('Resource has been exhausted')) {
+      $('error-msg').textContent = 'The Djinn is overwhelmed — too many mortals seeking wishes. Get your own free key for unlimited plays.';
+      helpBtn.style.display = '';
+    } else if (msg.includes('403') || msg.includes('leaked') || msg.includes('API key')) {
+      $('error-msg').textContent = 'The shared key has been drained. Get your own free key in 30 seconds — unlimited wishes, no cost.';
+      helpBtn.style.display = '';
+    } else if (msg.includes('400') || msg.includes('INVALID')) {
+      $('error-msg').textContent = 'The Djinn couldn\'t read your wish. Try rewording it.';
+      helpBtn.style.display = 'none';
+    } else {
+      $('error-msg').textContent = 'The Djinn\'s connection to this realm wavered. Try again.';
+      helpBtn.style.display = 'none';
+    }
     setUI('error');
     setGenie('idle');
   }
@@ -747,6 +762,7 @@ btnGrant.addEventListener('click', submitWish);
 wishInput.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey && !btnGrant.disabled) { e.preventDefault(); submitWish(); } });
 $('btn-again').addEventListener('click', () => { setUI('input'); setGenie('input'); wishInput.value = ''; charNum.textContent = '0'; btnGrant.disabled = true; setTimeout(() => wishInput.focus(), 300); });
 $('btn-retry').addEventListener('click', () => { setUI('input'); setGenie('input'); });
+$('btn-error-help').addEventListener('click', () => { setUI('idle'); setGenie('idle'); helpOverlay.classList.add('open'); });
 
 /* ── DONATE ── */
 const WALLET = 'H4Zm6hWTHsa6JsWrAy7smoRJk5zNjrd1Gc7dZyKEj1LH';
